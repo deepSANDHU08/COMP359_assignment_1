@@ -27,3 +27,48 @@ if subset(B,A) and not subset(A,B) then
 return GREATER
 
 ******************  to check the compariablity *******************************
+INPUT: two subsets A, B
+OUTPUT: true if A comes before B
+
+result ← PARTIAL_COMPARE(A, B)
+
+if result = LESS then
+    return true
+
+if result = GREATER then
+    return false
+
+// A and B are incomparable
+if CARDINALITY(A) ≠ CARDINALITY(B) then
+    return CARDINALITY(A) < CARDINALITY(B)
+
+// final tie-break
+return A is lexicographically smaller than B
+
+******************************* generating power set *******************
+OUTPUT: list SUBSETS containing all subsets of U
+
+initialize empty list SUBSETS
+
+for x from 0 to 63 do
+    create empty subset S
+    for i from 0 to 5 do
+        if bit i of x is 1 then
+            add U[i] to S
+    add S to SUBSETS
+
+return SUBSETS
+************************** main ***************
+SUBSETS <- GENERATE_SUBSETS()
+
+// demonstrate custome sorting in c++
+sort SUBSET using TOTAL_COMPARE
+
+EDGES<-- GENERATE_HASSE_EDGES(SUBSETS)
+
+//Output Hasse diagram (maybe graphviz)
+for each subset S in SUBSETS do
+ output node labeled 5
+
+for each edge (A--> B) in EDGES do
+  output directed edge A --> b
