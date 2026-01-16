@@ -1,0 +1,29 @@
+Input: two subsets A,B can be a bitset
+Output: true if A is a subset of B, false otherwise
+
+if (
+    A AND (B COMPLIMENT) is emplty
+    return true
+
+)
+    else return false
+
+INPUT : Subset A
+OUTPUT : NUMBER OF ELEMENTS IN A     ( this is for cardinality)
+
+return number of 1-bits in a
+
+********************* PARTIAL_COMPARE A and B ***********************
+
+INPUT : two sets A and B 
+OUTPUT : one of {LESS, EQUAL, GREATER, INCOMPARABLE}
+
+if A = b 
+return Equal
+if subset(A,B) and not subset(B,A) then
+return LESS
+
+if subset(B,A) and not subset(A,B) then
+return GREATER
+
+******************  to check the compariablity *******************************
