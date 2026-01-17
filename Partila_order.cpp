@@ -18,11 +18,11 @@
 using Subset = std::bitset<6>;
 static const char U[6] = {'a','b','c','d','e','f'};
 
-std::string subsettoString (const Subset& s){
+std::string subsetToString (const Subset& s){
     std::string out = "{";
     bool first = true;
 
-    for (int = 0; i < 6; i++){
+    for (int i = 0; i < 6; i++){
         if(s.test(i)) {
             if(!first) out += ",";
             out += U[i];
