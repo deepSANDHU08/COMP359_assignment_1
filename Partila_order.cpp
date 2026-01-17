@@ -15,7 +15,7 @@
 #include<bitset>     // required for manipulating bits, assigns 1 if an element in a subset, asigns 0 if element is not there in a subset.
 #include<vector>        //
 
-using Set = std::bitset<6>;
+using Subset = std::bitset<6>;
 static const char U[6] = {'a','b','c','d','e','f'};
 
 std::string subsettoString (const Subset& s){
@@ -54,4 +54,28 @@ Relation comparePartial(const Subset& A, const Subset& B){
 
     return Relation::Incomparable; 
 
+}
+/* Temporary main to test this section */
+int main() {
+    Subset A, B;
+
+    A.set(0); // {a}
+    B.set(0);
+    B.set(1); // {a,b}
+
+    std::cout << "A = " << subsetToString(A) << "\n";
+    std::cout << "B = " << subsetToString(B) << "\n";
+
+    Relation r = comparePartial(A, B);
+
+    if (r == Relation::Less)
+        std::cout << "A is a subset of B\n";
+    else if (r == Relation::Greater)
+        std::cout << "B is a subset of A\n";
+    else if (r == Relation::Equal)
+        std::cout << "A equals B\n";
+    else
+        std::cout << "A and B are incomparable\n";
+
+    return 0;
 }
