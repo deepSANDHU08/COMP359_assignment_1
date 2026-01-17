@@ -10,10 +10,48 @@
 
 #include<iostream>
 #include<string>
-#include<fstream>    // To read from and wreite to files in storage. 
+#include<fstream>    // To read from and write to files in storage. 
 #include<algorithm>  // required for standard algorithms 
 #include<bitset>     // required for manipulating bits, assigns 1 if an element in a subset, asigns 0 if element is not there in a subset.
-#include<vector>
+#include<vector>        //
 
 using Set = std::bitset<6>;
-static const char elements[6] = {'a','b','c','d','e','f'};
+static const char U[6] = {'a','b','c','d','e','f'};
+
+std::string subsettoString (const Subset& s){
+    std::string out = "{";
+    bool first = true;
+
+    for (int = 0; i < 6; i++){
+        if(s.test(i)) {
+            if(!first) out += ",";
+            out += U[i];
+            first = false;
+        }
+    }
+    out += "}";
+    return (out == "{}") ? "∅" : out;
+
+}
+
+/*------------- A is a subset B ?
+if A contaons any element that B doesn't it not a subset. 
+---------------------------------------------- */
+bool isSubsetof(const Subset& A, const Subset& B){
+     return (A & ~B).none();
+}
+/*The Partial order comparison returns one of 4 relationships.*/
+
+enum class Relation {Less, Equal, Greater, Incomparable};
+
+Relation comparePartial(const Subset& A, const Subset& B){
+   if (A == B) return Relation::Equal;
+   const bool A_in_B = isSubsetof (A,B);
+   const bool B_in_A = isSubsetof(B, A);
+
+    if (A_in_B && !B_in_A) return Relation::Less;     // A ⊂ B
+    if (B_in_A && !A_in_B) return Relation::Greater;  // B ⊂ A
+
+    return Relation::Incomparable; 
+
+}
