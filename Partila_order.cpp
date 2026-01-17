@@ -55,7 +55,7 @@ Relation comparePartial(const Subset& A, const Subset& B){
     return Relation::Incomparable; 
 
 }
-/* Temporary main to test this section */
+/* Temporary main to test this section 
 int main() {
     Subset A, B;
 
@@ -76,6 +76,62 @@ int main() {
         std::cout << "A equals B\n";
     else
         std::cout << "A and B are incomparable\n";
+
+    return 0;
+} */
+/* -----------------------------
+   Sorting needs a total order.
+   We'll respect subset order when possible, otherwise tie-break:
+     1) smaller size first
+     2) smaller bit-pattern value
+   ----------------------------- */
+bool totalOrderLess(const Subset& A, const Subset& B) {
+    if (A == B) return false;
+
+    Relation r = comparePartial(A, B);
+    if (r == Relation::Less) return true;
+    if (r == Relation::Greater) return false;
+
+    // Incomparable: decide using tie-break rules
+    if (A.count() != B.count()) return A.count() < B.count();
+    return A.to_ulong() < B.to_ulong();
+}
+/* -----------------------------
+   Generate all subsets of U.
+   We loop over all 6-bit patterns (0..63) and convert each to a bitset.
+   ----------------------------- */
+
+std::vector<Subset> generatePowerSet(){
+    std::vector<Subset> subsets;
+    subsets.reserve(64);
+
+    for(int x=0; x < 64; ++x){
+        Subset s;
+        for(int i=0; i < 6; ++i){
+            if(x & (1<<i)) s.set(i);
+        }
+        subsets.push_back(s);
+    }
+    return subsets;
+}
+/* Test output up to here */
+int main() {
+    auto subsets = generatePowerSet();
+
+    std::cout << "Total subsets: " << subsets.size() << "\n\n";
+    std::cout << "First 10 subsets (unsorted):\n";
+    for (int i = 0; i < 10; i++) {
+        std::cout << i << ": " << subsetToString(subsets[i])
+                  << "  size=" << subsets[i].count() << "\n";
+    }
+
+    // Optional: show sorted first 10
+    std::sort(subsets.begin(), subsets.end(), totalOrderLess);
+    std::cout << "\nFirst 10 subsets (sorted):\n";
+    for (int i = 0; i < 10; i++) {
+        std::cout << i << ": " << subsetToString(subsets[i])
+                  << "  size=" << subsets[i].count() << "\n";
+    }
 
     return 0;
 }
