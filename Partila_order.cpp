@@ -167,4 +167,42 @@ std::vector<std::pair<int,int>> makeHasseEdges(const std::vector<Subset>& subs){
     }
     return Edges;
 }
+/*--------------------
+Write Graphviz DOT file:
+nodes groupped by level (subset size)
+edges are hasse cover relations
+---------------------------*/
+void writeDot(const std::vector<Subset>& subs,
+               const std::vector<std::pair<int,int>>& edges,
+               const std::string& result){
 
+        std::ofstream out(result);
+
+        out<< "digraph hasse{\n";
+        out<< " rankdir=BT;\n";
+        out<< " node[shape=box, fontsize=10];\n\n";
+
+         // Nodes
+    for (int i = 0; i < (int)subs.size(); ++i) {
+        out << "  S" << i << " [label=\"" << pretty(subs[i]) << "\"];\n";
+    }
+    out << "\n";
+
+    // Levels (rank by subset size)
+    for (int k = 0; k <= 6; ++k) {
+        out << "  { rank=same; ";
+        for (int i = 0; i < (int)subs.size(); ++i) {
+            if ((int)subs[i].count() == k) out << "S" << i << "; ";
+        }
+        out << "}\n";
+    }
+    out << "\n";
+
+    // Edges
+    for (auto [a,b] : edges) {
+        out << "  S" << a << " -> S" << b << ";\n";
+    }
+
+    out << "}\n";
+        
+               } 
