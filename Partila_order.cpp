@@ -114,7 +114,7 @@ std::vector<Subset> generatePowerSet(){
     }
     return subsets;
 }
-/* Test output up to here */
+/* Test output up to here 
 int main() {
     auto subsets = generatePowerSet();
 
@@ -133,5 +133,38 @@ int main() {
                   << "  size=" << subsets[i].count() << "\n";
     }
 
-    return 0;
+    return 0; 
+}*/
+
+/*-------------------------------
+for Graphviz nodes, upto 63 
+we do need to convert a subset bitset back to 0 to 63 id.
+*/
+int idof(const Subset& s){
+    int id = 0;
+    for (int i = 0; i <6; ++i){
+        if (s.test(i)) id |= (1<<i);
+    }
+     return id;
 }
+/*--------------------------------------
+Hasse edge (cover relations):
+A -> B if B = A plus exactly one new element
+-----------------------------------*/
+std::vector<std::pair<int,int>> makeHasseEdges(const std::vector<Subset>& subs){
+    std::vector<std::pair<int,int>> Edges;
+
+    for(int a = 0; a < (int)subs.size(); ++a){
+        const Subset& A = subs[a];
+
+        for (int i = 0; i < 6; ++i){
+            if(!A.test(i)){
+                Subset B = A;
+                B.set(i);
+                Edges.push_back({a, idof(B)});
+            }
+        }
+    }
+    return Edges;
+}
+
