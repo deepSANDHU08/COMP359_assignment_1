@@ -184,7 +184,7 @@ void writeDot(const std::vector<Subset>& subs,
 
          // Nodes
     for (int i = 0; i < (int)subs.size(); ++i) {
-        out << "  S" << i << " [label=\"" << pretty(subs[i]) << "\"];\n";
+        out << "  S" << i << " [label=\"" << subsetToString(subs[i]) << "\"];\n";
     }
     out << "\n";
 
@@ -206,3 +206,29 @@ void writeDot(const std::vector<Subset>& subs,
     out << "}\n";
         
                } 
+/* -----------------------------
+   Main
+   ----------------------------- */
+int main() {
+    // 1) Build the power set
+    std::vector<Subset> subsets = generatePowerSet();
+
+    // 2) Show custom sorting (optional, but demonstrates C++ comparator)
+    std::sort(subsets.begin(), subsets.end(), totalOrderLess);
+
+    std::cout << "First 10 subsets after sorting (tie-break total order):\n";
+    for (int i = 0; i < 10; ++i) {
+        std::cout << "  " << subsetToString(subsets[i])
+                  << "   size=" << subsets[i].count() << "\n";
+    }
+
+    // 3) Build the Hasse diagram from the original 0..63 ordering
+    std::vector<Subset> graphSubsets = generatePowerSet();
+    auto edges = makeHasseEdges(graphSubsets);
+
+    // 4) Write Graphviz output
+    writeDot(graphSubsets, edges, "hasse_b6.dot");
+    std::cout << "\nWrote Graphviz file: hasse_b6.dot\n";
+
+    return 0;
+}
