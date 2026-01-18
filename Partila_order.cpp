@@ -36,6 +36,11 @@ std::string subsetToString (const Subset& s){
 
 /*------------- A is a subset B ?
 if A contaons any element that B doesn't it not a subset. 
+for(int i=0;i<6;i++){
+  if(A.test(i) && !B.test(i)) return false;
+}
+return true;
+
 ---------------------------------------------- */
 bool isSubsetof(const Subset& A, const Subset& B){
      return (A & ~B).none();
