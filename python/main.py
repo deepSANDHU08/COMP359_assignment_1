@@ -20,7 +20,7 @@
 
 from itertools import combinations
 
-U = ["a","b","c","e","f"]
+U = ["a","b","c","d","e","f"]
 
 def levels(U):
     L = []
@@ -35,3 +35,20 @@ L = levels(U)
 
 print(len(L))       # should be 6
 print(len(L[3]))    # should be 10
+
+def hasse_edges(L):
+    edges=[]
+    for k in range(len(L)-1):  # from level 0 to level l - 1 
+        for A in L[k]:
+            for B in L[k+1]:
+                if A.issubset(B):
+                    edges.append((A,B))
+    return edges
+
+E = hasse_edges(L)
+
+print("Number of edges:", len(E))
+
+print("First 10:")
+for i in range(10):
+    print(E[i][0]), "--->", E[i][1]
