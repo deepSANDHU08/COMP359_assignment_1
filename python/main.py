@@ -19,36 +19,78 @@
 # print(incomprable({"a"},{"a","c"})) #false '''
 
 from itertools import combinations
+import matplotlib.pyplot as plt
 
-U = ["a","b","c","d","e","f"]
+# Universe
+U = ["a", "b", "c", "d", "e", "f"]
 
+# Step 1: Build levels (power set grouped by size)
 def levels(U):
     L = []
-    for k in range(len(U) + 1): # this will store
+    for k in range(len(U) + 1):
         level_k = []
-        for comb in combinations(U, k): # for the structure of L
+        for comb in combinations(U, k):
             level_k.append(frozenset(comb))
-        L.append(level_k)   # <-- moved outside inner loop
+        L.append(level_k)
     return L
 
 L = levels(U)
 
-print(len(L))       # should be 6
-print(len(L[3]))    # should be 10
-
+# Step 2: Build Hasse edges (cover relations)
 def hasse_edges(L):
-    edges=[]
-    for k in range(len(L)-1):  # from level 0 to level l - 1 
+    edges = []
+    for k in range(len(L) - 1):
         for A in L[k]:
-            for B in L[k+1]:
+            for B in L[k + 1]:
                 if A.issubset(B):
-                    edges.append((A,B))
+                    edges.append((A, B))
     return edges
 
 E = hasse_edges(L)
+print("Number of edges:", len(E))  # should be 192 for |U|=6
 
-print("Number of edges:", len(E))
+# Step 3: Assign node positions (centered per level)
+def node_position(L):
+    pos = {}
+    for k, level in enumerate(L):
+        for i, S in enumerate(level):
+            x = i - (len(level) - 1) / 2   # center each level
+            y = k
+            pos[S] = (x, y)
+    return pos
 
-print("First 10:")
-for i in range(10):
-    print(E[i][0]), "--->", E[i][1]
+pos = node_position(L)
+
+# Step 4: Draw Hasse diagram
+plt.figure(figsize=(10, 6))
+
+# Draw edges
+for (A, B) in E:
+    x1, y1 = pos[A]
+    x2, y2 = pos[B]
+    plt.plot([x1, x2], [y1, y2], linewidth=1)
+
+# Draw nodes
+xs = []
+ys = []
+for (x, y) in pos.values():
+    xs.append(x)
+    ys.append(y)
+
+plt.scatter(xs, ys, s=40)
+
+plt.yticks(range(len(L)))
+plt.xlabel(" ")
+plt.ylabel("Subset size (level)")
+plt.title("Hasse Diagram of P(U) under ⊆")
+
+plt.show()
+
+
+
+
+
+
+
+
+
