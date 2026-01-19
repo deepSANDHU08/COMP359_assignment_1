@@ -52,3 +52,44 @@ for m in subsets[:10]:
 print("\nFirst 10 edges:")
 for (A, B) in edges[:10]:
     print(subset_to_string(A), "->", subset_to_string(B))
+
+def write_dot(subsets, edges, filename):
+    # Write a Graphviz DOT file for the Hasse diagram
+    out = open(filename, "w", encoding="utf-8")
+
+    out.write("digraph hasse {\n")
+    out.write("  rankdir=BT;\n")
+    out.write("  node [shape=box, fontsize=10];\n\n")
+
+    # Nodes
+    for s in subsets:
+        out.write('  S' + str(s) + ' [label="' + subset_to_string(s) + '"];\n')
+    out.write("\n")
+
+    # Levels (rank by subset size)
+    for k in range(7):  # sizes 0..6
+        out.write("  { rank=same; ")
+        for s in subsets:
+            if bin(s).count("1") == k:
+                out.write("S" + str(s) + "; ")
+        out.write("}\n")
+    out.write("\n")
+
+    # Hasse edges (cover relations)
+    for (A, B) in edges:
+        out.write("  S" + str(A) + " -> S" + str(B) + ";\n")
+
+    out.write("}\n")
+    out.close()
+
+if __name__ == "__main__":
+
+    subsets = generate_power_set()
+    edges = make_hasse_edges(subsets)
+
+    print("Total subsets:", len(subsets))   # should be 64
+    print("Total edges:", len(edges))       # should be 192
+
+    write_dot(subsets, edges, "hasse_b6.dot")
+    print("Hasse diagram written to hasse_b6.dot")
+
