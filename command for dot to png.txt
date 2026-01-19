@@ -1,0 +1,1 @@
+& "C:\Graphviz-14.1.1-win64\bin\dot.exe" -Tpng hasse_b6.dot -o hasse_b6.png
