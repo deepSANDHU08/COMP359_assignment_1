@@ -14,6 +14,6 @@ GraphViz
 ## Contributing
 * Java - Gavin
 * Python - Pushpdeep
-* C++ - Pushpdeep
+* Cpp - Pushpdeep
 * Presentation / Explanations - Gavin
 
