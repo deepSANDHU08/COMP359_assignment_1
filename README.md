@@ -12,8 +12,8 @@ GraphViz
 * Online version: https://dreampuf.github.io/GraphvizOnline/
 
 ## Contributing
-Java - Gavin
-Python - Pushpdeep
-C++ - Pushpdeep
-Presentation / Explanations - Gavin
+* Java - Gavin
+* Python - Pushpdeep
+* C++ - Pushpdeep
+* Presentation / Explanations - Gavin
 
